@@ -9,6 +9,16 @@
 </p>
 <br />
 <h4>Comments:</h4>
+<% @comments.each do |post| %>
+	<p>
+		<%= post['content'] %>
+		<br />
+		<small>
+			Added at <%= post['created_date'] %>
+		</small>
+	</p>
+	<hr />
+<% end %>
 <p>
 	<form action="/comments/<%= @row['id'] %>" method="POST" role="form">
 		<div class="form-group">
