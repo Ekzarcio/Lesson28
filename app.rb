@@ -47,3 +47,8 @@ get '/comments/:post_id' do
 	@row = results[0]
 	erb :comments
 end
+
+post '/comments/:post_id' do
+	post_id = params[:post_id]
+	content = params[:content]
+end
