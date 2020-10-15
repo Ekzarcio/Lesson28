@@ -4,7 +4,8 @@
 		<title>Leprosorium</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<!-- Bootstrap -->
-		<link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+		<link href="/vendor/bootstrap.css" rel="stylesheet">
+		<script src="/vendor/bootstrap.js"></script>
 
 		<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 		<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -17,20 +18,17 @@
 		<div class="container">
 
 			<!-- Static navbar -->
-			<nav class="navbar navbar-default" role="navigation">
+			<nav class="navbar navbar-expand-lg navbar-light bg-light" role="navigation">
 			  <div class="navbar-header">
-			    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-			      <span class="sr-only">Toggle navigation</span>
-			      <span class="icon-bar"></span>
-			      <span class="icon-bar"></span>
-			      <span class="icon-bar"></span>
+			    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
+			      <span class="navbar-toggler-icon"></span>
 			    </button>
 			    <a class="navbar-brand" href="/">Leprosorium</a>
 			  </div>
 			  <div class="navbar-collapse collapse">
-			    <ul class="nav navbar-nav">
-			      <li><a href="/">Posts</a></li>
-			      <li><a href="/new">New post</a></li>
+			    <ul class="nav navbar-nav mr-auto">
+			      <li><a class="nav-link" href="/">Posts</a></li>
+			      <li><a class="nav-link" href="/new">New post</a></li>
 			    </ul>
 			  </div><!--/.nav-collapse -->
 			</nav>
@@ -46,8 +44,6 @@
 
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="/vendor/jquery-1.9.1.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/vendor/jquery.js"></script>
   </body>
 </html>
