@@ -2,11 +2,10 @@
 require 'rubygems'
 require 'sinatra'
 require 'sinatra/reloader'
-require 'sqlite3'
+require 'pg'
 
 def init_db
-	@db = SQLite3::Database.new 'leprosorium.db'
-	@db.results_as_hash = true
+	@db = PG.connect('localhost',5432,'','','Leprosorium','postgres','P123#dfr')
 end
 
 before do
@@ -15,21 +14,21 @@ end
 
 configure do
 	init_db
-	@db.execute 'create table if not exists Posts (
-		id	INTEGER PRIMARY KEY AUTOINCREMENT,
-		created_date	DATE,
+	@db.exec %(create table if not exists Posts (
+		id	SERIAL PRIMARY KEY,
+		created_date	timestamp without time zone,
 		content	TEXT
-		)'
-	@db.execute 'create table if not exists Comments (
-		id	INTEGER PRIMARY KEY AUTOINCREMENT,
-		created_date	DATE,
+		))
+	@db.exec %(create table if not exists Comments (
+		id	SERIAL PRIMARY KEY,
+		created_date	timestamp without time zone,
 		content	TEXT,
 		post_id INTEGER
-		)'
+		))
 end
 
 get '/' do
-	@results = @db.execute 'select * from Posts order by id desc'
+	@results = @db.exec "select * from Posts order by id desc"
 	erb :index
 end
 
@@ -43,15 +42,16 @@ post '/new' do
 		@error = 'Type post text'
 		return erb :new
 	end
-	@db.execute 'insert into Posts (content, created_date) values (?, datetime())', [content]
+	@db.exec_params "insert into Posts (content, created_date) values ($1, date_trunc('second', now()::timestamp))",[content]
 	redirect to('/')
 end
 
 get '/comments/:post_id' do
 	post_id = params[:post_id]
-	results = @db.execute 'select * from Posts where id = ?', [post_id]
+	results = @db.exec_params "select * from posts where id = $1",[post_id]
+	#results = @db.exec_prepared 'statement2', [post_id]
 	@row = results[0]
-	@comments = @db.execute 'select * from Comments where post_id=?',[post_id]
+	@comments = @db.exec_params "select * from comments where post_id = $1",[post_id]
 	erb :comments
 end
 
@@ -62,6 +62,6 @@ post '/comments/:post_id' do
 		@error = 'Type post text'
 		return erb :comments
 	end
-	@db.execute 'insert into Comments (content, created_date, post_id) values (?, datetime(), ?)', [content, post_id]
+	@db.exec_params "insert into Comments (content, created_date, post_id) values ($1, date_trunc('second', now()::timestamp), $2)",[content, post_id]
 	redirect to('/comments/' + post_id)
 end
